@@ -10,16 +10,14 @@ def get_list(name, descriptions=None):
         descriptions = {}
 
     items = get_raw_list(name)
-    if isinstance(items, dict):
-        make_dict_readable(items, descriptions)
-    return items
+    item_dict = items if isinstance(items, dict) else {item: item for item in items}
+
+    return make_dict_readable(name, item_dict, descriptions)
 
 
 def get_lists(names: list[str], descriptions=None):
-    items = sorted(
-        item for name in names for item in get_list(name, descriptions).items()
-    )
-    return {key: value for key, value in items}
+
+    return [item for name in names for item in get_list(name, descriptions)]
 
 
 def get_raw_list(name):
@@ -27,17 +25,23 @@ def get_raw_list(name):
     return registry.lists[cursorless_list_name][0].copy()
 
 
-def make_dict_readable(dict, descriptions=None):
+def make_dict_readable(type: str, dict, descriptions=None):
     if descriptions is None:
         descriptions = {}
 
-    for k in dict:
-        desc = dict[k]
-        if desc in descriptions:
-            desc = descriptions[desc]
-        else:
-            desc = make_readable(desc)
-        dict[k] = desc
+    return [
+        {
+            "identifier": value,
+            "type": type,
+            "spokenForms": [
+                {
+                    "spokenForm": key,
+                    "description": descriptions.get(value, make_readable(value)),
+                }
+            ],
+        }
+        for key, value in dict.items()
+    ]
 
 
 def make_readable(text):

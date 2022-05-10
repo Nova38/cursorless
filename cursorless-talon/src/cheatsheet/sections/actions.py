@@ -31,21 +31,84 @@ def get_actions():
         get_raw_list("source_destination_connective").keys()
     )[0]
 
-    make_dict_readable(
-        simple_actions,
+    return [
+        *make_dict_readable(
+            "action",
+            simple_actions,
+            {
+                "callAsFunction": "Call T on S",
+            },
+        ),
         {
-            "callAsFunction": "Call T on S",
+            "identifier": "replaceWithTarget",
+            "type": "action",
+            "spokenForms": [
+                {
+                    "spokenForm": f"{complex_actions['replaceWithTarget']} <T1> {source_destination_connective} <T2>",
+                    "description": "Replace T2 with T1",
+                },
+                {
+                    "spokenForm": f"{complex_actions['replaceWithTarget']} <T>",
+                    "description": "Replace S with T",
+                },
+            ],
         },
-    )
-    return {
-        **simple_actions,
-        f"{complex_actions['replaceWithTarget']} <T1> {source_destination_connective} <T2>": "Replace T2 with T1",
-        f"{complex_actions['replaceWithTarget']} <T>": "Replace S with T",
-        f"{complex_actions['moveToTarget']} <T1> {source_destination_connective} <T2>": "Move T1 to T2",
-        f"{complex_actions['moveToTarget']} <T>": "Move T to S",
-        f"{complex_actions['swapTargets']} <T1> {swap_connective} <T2>": "Swap T1 with T2",
-        f"{complex_actions['swapTargets']} {swap_connective} <T>": "Swap S with T",
-        f"{complex_actions['applyFormatter']} <F> at <T>": "Reformat T as F",
-        f"<P> {complex_actions['wrapWithPairedDelimiter']} <T>": "Wrap T with P",
-        f"<P> {complex_actions['rewrap']} <T>": "Rewrap T with P",
-    }
+        {
+            "identifier": "moveToTarget",
+            "type": "action",
+            "spokenForms": [
+                {
+                    "spokenForm": f"{complex_actions['moveToTarget']} <T1> {source_destination_connective} <T2>",
+                    "description": "Move T1 to T2",
+                },
+                {
+                    "spokenForm": f"{complex_actions['moveToTarget']} <T>",
+                    "description": "Move T to S",
+                },
+            ],
+        },
+        {
+            "identifier": "swapTargets",
+            "type": "action",
+            "spokenForms": [
+                {
+                    "spokenForm": f"{complex_actions['swapTargets']} <T1> {swap_connective} <T2>",
+                    "description": "Swap T1 with T2",
+                },
+                {
+                    "spokenForm": f"{complex_actions['swapTargets']} {swap_connective} <T>",
+                    "description": "Swap S with T",
+                },
+            ],
+        },
+        {
+            "identifier": "applyFormatter",
+            "type": "action",
+            "spokenForms": [
+                {
+                    "spokenForm": f"{complex_actions['applyFormatter']} <F> at <T>",
+                    "description": "Reformat T as F",
+                }
+            ],
+        },
+        {
+            "identifier": "wrapWithPairedDelimiter",
+            "type": "action",
+            "spokenForms": [
+                {
+                    "spokenForm": f"<P> {complex_actions['wrapWithPairedDelimiter']} <T>",
+                    "description": "Wrap T with P",
+                }
+            ],
+        },
+        {
+            "identifier": "rewrap",
+            "type": "action",
+            "spokenForms": [
+                {
+                    "spokenForm": f"<P> {complex_actions['rewrap']} <T>",
+                    "description": "Rewrap T with P",
+                }
+            ],
+        },
+    ]

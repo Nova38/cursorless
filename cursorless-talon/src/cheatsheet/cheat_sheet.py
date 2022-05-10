@@ -292,14 +292,57 @@ class CheatSheet:
 class Actions:
     def cursorless_cheat_sheet_toggle():
         """Toggle cursorless cheat sheet"""
-        global cheat_sheet
-        if cheat_sheet:
-            actions.mode.disable("user.cursorless_cheat_sheet")
-            cheat_sheet.close()
-            cheat_sheet = None
-        else:
-            cheat_sheet = CheatSheet()
-            actions.mode.enable("user.cursorless_cheat_sheet")
+        actions.user.vscode_with_plugin(
+            "cursorless.showCheatsheet", actions.user.cursorless_cheat_sheet_get_json()
+        )
+
+    def cursorless_cheat_sheet_get_json():
+        """Get cursorless cheat sheet json"""
+        return {
+            "sections": [
+                {
+                    "name": "Actions",
+                    "id": "actions",
+                    "items": get_actions(),
+                },
+                {
+                    "name": "Scopes",
+                    "id": "scopes",
+                    "items": get_scopes(),
+                },
+                {
+                    "name": "Paired delimiters",
+                    "id": "paired-delimiters",
+                    "items": get_lists(
+                        [
+                            "wrapper_only_paired_delimiter",
+                            "wrapper_selectable_paired_delimiter",
+                            "selectable_only_paired_delimiter",
+                        ]
+                    ),
+                },
+                {
+                    "name": "Special marks",
+                    "id": "special-marks",
+                    "items": get_list("special_mark"),
+                },
+                {
+                    "name": "Positions",
+                    "id": "positions",
+                    "items": get_list("position"),
+                },
+                {
+                    "name": "Colors",
+                    "id": "colors",
+                    "items": get_list("hat_color"),
+                },
+                {
+                    "name": "Shapes",
+                    "id": "shapes",
+                    "items": get_list("hat_shape"),
+                },
+            ]
+        }
 
     def cursorless_open_instructions():
         """Open web page with cursorless instructions"""
