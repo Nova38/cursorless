@@ -1,5 +1,7 @@
 import math
+import tempfile
 import webbrowser
+from pathlib import Path
 
 from talon import Module, actions, cron, skia, ui
 from talon.canvas import Canvas
@@ -288,13 +290,20 @@ class CheatSheet:
         self.w = max(self.w, rect.width)
 
 
+cheatsheet_out_dir = Path(tempfile.mkdtemp())
+
+
 @mod.action_class
 class Actions:
     def cursorless_cheat_sheet_toggle():
         """Toggle cursorless cheat sheet"""
-        actions.user.vscode_with_plugin(
-            "cursorless.showCheatsheet", actions.user.cursorless_cheat_sheet_get_json()
+        cheatsheet_out_path = cheatsheet_out_dir / "cheatsheet.html"
+        actions.user.vscode_with_plugin_and_wait(
+            "cursorless.showCheatsheet",
+            actions.user.cursorless_cheat_sheet_get_json(),
+            str(cheatsheet_out_path),
         )
+        webbrowser.open(cheatsheet_out_path.as_uri())
 
     def cursorless_cheat_sheet_get_json():
         """Get cursorless cheat sheet json"""
