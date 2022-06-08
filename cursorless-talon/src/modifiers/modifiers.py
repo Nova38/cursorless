@@ -31,7 +31,6 @@ def cursorless_simple_modifier(m) -> dict[str, str]:
 
 
 modifiers = [
-    "<user.cursorless_position>",  # before, end of
     "<user.cursorless_simple_modifier>",  # inside, bounds, just, leading, trailing
     "<user.cursorless_head_tail_modifier>",  # head, tail
     "<user.cursorless_containing_scope>",  # funk, state, class
