@@ -1,0 +1,220 @@
+
+% --------------------------------------------------
+% Page setup with Margins 
+% --------------------------------------------------
+\documentclass[5pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.5cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[ttdefault=true]{AnonymousPro}
+\renewcommand*\familydefault{\ttdefault} %% Only if the base font of the document is to be typewriter style
+\usepackage[fontsize=9pt]{fontsize}
+
+\geometry{
+    letterpaper,
+    textwidth = 6.25in
+}
+% \usepackage{expl3} % load latex3 packages
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+
+% --------------------------------------------------
+% ╔════════════════════════════════════════════════════════════╗ 
+% ╙────────────────────────────────────────────────────────────╜ 
+%                    Color                         
+% ╓────────────────────────────────────────────────────────────╖ 
+% ╚════════════════════════════════════════════════════════════╝ 
+\usepackage[usenames,table,x11names, dvipsnames]{xcolor}
+
+
+
+\colorlet{CommandColor}{RoyalBlue4}
+\colorlet{SpeechColor}{Coral2}
+
+\colorlet{FormatterColor}{RoyalBlue4}
+\colorlet{ModifierColor}{RoyalBlue4}
+\colorlet{PairedDelimiterColor}{RoyalBlue4}
+\colorlet{CurrentSelectionColor}{RoyalBlue4}
+
+
+\newcommand{\SetColors}[1]{
+    % \definecolor{TitleBGColor}{HTML}{#1}
+    \colorlet{base}{#1}
+    \colorlet{BGColor}{#1!5!white}
+    \colorlet{TitleBGColor}{#1!75!black}
+    \colorlet{evenBGColor}{#1!85!black!7}
+    \colorlet{oddBGColor}{#1!1!white!99}
+    % \rowcolors{2}{#1!10!white}{#1!5!white}
+}
+\SetColors{DodgerBlue1}
+
+
+
+% --------------------------------------------------
+% --------------------------------------------------
+% ╔════════════════════════════════════════════════════════════╗ 
+% ╙────────────────────────────────────────────────────────────╜ 
+%                    Tables                         
+% ╓────────────────────────────────────────────────────────────╖ 
+% ╚════════════════════════════════════════════════════════════╝ 
+
+    \usepackage[l3]{csvsimple}
+    \usepackage{tabularray}
+
+    \csvstyle{MainTableSytle}{
+        separator=tab,
+        no head,
+        centered tabularray =
+        {
+            colspec={ X[1,r,m] X[m]},
+            rowsep=0pt,
+            column{1} = {fg=CommandColor},
+            column{2} = {fg=SpeechColor},
+            row{odd} = {oddBGColor},
+            row{even} = {evenBGColor},
+            row{1} = {fg=black, bg = white, font=\bfseries},
+            },
+        table head = {\hline[0.1em,base!50!black]},
+        table foot = {\hline[0.1em,base!50!black]},
+        late after first line = {\\\hline[base!50!black]},
+    }
+    \def\scale{2}
+
+    \csvstyle{LongerCommandTableStyle}{
+        separator=tab,
+        no head,
+        centered tabularray =
+            {
+                colspec={ X[1.9,r,m] X[m]},
+                rowsep=0pt,
+                column{1} = {fg=CommandColor},
+                column{2} = {fg=SpeechColor},
+                row{odd} = {oddBGColor},
+                row{even} = {evenBGColor},
+                row{1} = {fg=black, bg = white, font=\bfseries},
+            },
+        table head = {\hline[0.1em,base!50!black]},
+        table foot = {\hline[0.1em,base!50!black]},
+        late after first line = {\\\hline[base!50!black]},
+    }
+% ──────────────────────────────────────────────────
+
+
+% ╔════════════════════════════════════════════════════════════╗ 
+% ╙────────────────────────────────────────────────────────────╜ 
+%                    Tcolorbox                         
+% ╓────────────────────────────────────────────────────────────╖ 
+% ╚════════════════════════════════════════════════════════════╝ 
+\usepackage[most]{tcolorbox}
+
+% This is the style used for the boxes
+    \tcbset{
+        settablebox/.style = {
+            skin=enhanced,
+            colbacktitle=TitleBGColor,
+            colback=BGColor,
+            fonttitle=\large\bfseries\ttfamily,
+            center title,
+            colback=BGColor,
+            adjusted title={#1},
+            left=0mm,
+            right=0mm,
+            top=0mm,
+            bottom=0mm,
+            boxsep=0mm,
+            toptitle=0.25mm,
+            bottomtitle=0.25mm,
+            arc=0.2mm,
+            boxrule=0.20pt,
+            halign = center,
+        }
+    }
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\hyphenpenalty=10000
+\hbadness=10000
+\begin{document}
+
+
+
+
+
+
+\begin{tcbraster}[raster columns=4]
+
+
+
+
+
+\end{tcbraster}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tcbposter}[
+        coverage = {spread},
+        poster = {spacing=2mm, columns=10,rows = 10},
+        boxes = {},
+    ]
+
+    \posterbox[colback=white!50]{name=title,column=1,span=10,below=top}{
+        \begin{center}
+            \resizebox{10cm}{!}{\bfseries\Huge Cursorless Cheatsheet}
+
+            See the \href{https://www.cursorless.org/docs/}{full documentation} to learn more.
+
+        \end{center}
+    }
+
+    \posterbox[settablebox={Actions}]{name=Actions, column=1,span=4,below=title}{
+        \csvreader[MainTableSytle]
+        {./tsv/actions.tsv}{}
+        {\csvlinetotablerow}
+    }
+
+    % -----------------------------------------------------------
+
+    \posterbox[settablebox={Scope}]{name=Scope, column=5, span=3,below=title}{
+        \csvreader[MainTableSytle]
+        {./tsv/scopes.tsv}{}
+        {\csvlinetotablerow}
+    }
+    \posterbox[settablebox={Paired Delimiters}]{name=PairedDelimiters, column=5, span=3,below=Scope}{
+        \csvreader[MainTableSytle]
+        {./tsv/pairedDelimiters.tsv}{}
+        {\csvlinetotablerow}
+    }
+    % -----------------------------------------------------------
+    \posterbox[settablebox={Special Marks}]{name=SecialMarks, column=8, span=3,below=title}{
+        \csvreader[MainTableSytle]
+        {./tsv/specialMarks.tsv}{}
+        {\csvlinetotablerow}
+    }
+
+    \posterbox[settablebox={Positions}]{name=Positions, column=8, span=3,below=SecialMarks}{
+        \csvreader[MainTableSytle]
+        {./tsv/positions.tsv}{}
+        {\csvlinetotablerow}
+    }
+    \posterbox[settablebox={Compound Targets}]{name=CompoundTargets, column=8, span=3,below=Positions}{
+        \csvreader[MainTableSytle]
+        {./tsv/compoundTargets.tsv}{}
+        {\csvlinetotablerow}
+    }
+    \posterbox[settablebox={Colors}]{name=Colors, column=8, span=3,below=Positions}{
+        \csvreader[MainTableSytle]
+        {./tsv/colors.tsv}{}
+        {\csvlinetotablerow}
+    }
+
+    \SetColors{BlueViolet}
+    \posterbox[settablebox={Legend}]{name=Legend, column=8, span=3,below=Colors}{
+        \csvreader[MainTableSytle]
+        {./tsv/legend.tsv}{}
+        {\csvlinetotablerow}
+    }
+
+\end{tcbposter}
+
+\end{document}
